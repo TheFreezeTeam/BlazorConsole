@@ -1,0 +1,64 @@
+﻿@inherits CliBase
+
+<div class="row">
+
+  <div id="@Id" class="col bg-secondary p-3">
+    <div id="InnerConsole" class="bg-dark p-3 rounded-top">
+      <div id="Outputs" class="text-light">
+        @foreach (var line in Output)
+        {
+          <text>@line</text>
+          <br />
+        }
+      </div>
+      <div id="InputArea" class="bg-transparent p-3 rounded-bottom d-flex">
+        <textarea class="bg-transparent text-light border-0"
+                  autofocus
+                  placeholder="Enter command"
+                  @bind="@Input"
+                  @onkeypress="@HandleKeyPress"
+                  onkeydown="
+              const pd = [@TabKey];
+              if (pd.includes(event.which)) {
+                event.preventDefault();
+                event.target.dispatchEvent(new KeyboardEvent('keypress', event));
+              }">
+        </textarea>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .console {
+    font-family: monospace;
+  }
+
+  ::placeholder {
+    color: red;
+  }
+
+  #InputArea {
+   display:flex
+  }
+
+  #InputArea:before {
+    content: '> ';
+    color: grey;
+    vertical-align: top;
+  }
+
+  #@Id textarea {
+    font-family: monospace;
+    min-width: 100%;
+    resize: none;
+    outline: none;
+  }
+
+  #@Id textarea:focus {
+    outline: none;
+    box
+  }
+
+</style>

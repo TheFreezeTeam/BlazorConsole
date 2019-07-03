@@ -1,6 +1,7 @@
 ﻿namespace BlazorCli.Client.Features.WeatherForecast
 {
   using System.Collections.Generic;
+  using System.Reflection;
   using System.Text.Json.Serialization;
   using BlazorCli.Shared.Features.WeatherForecast;
   using BlazorState;

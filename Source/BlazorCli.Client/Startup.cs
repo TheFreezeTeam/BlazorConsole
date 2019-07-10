@@ -1,5 +1,6 @@
 ﻿namespace BlazorCli.Client
 {
+  using BlazorCli.Client.CommandLine;
   using BlazorCli.Client.Features.Application;
   using BlazorCli.Client.Features.Counter;
   using BlazorCli.Client.Features.EventStream;
@@ -9,6 +10,7 @@
   using MediatR;
   using Microsoft.AspNetCore.Components.Builder;
   using Microsoft.Extensions.DependencyInjection;
+  using System.CommandLine;
   using System.Reflection;
   using System.Text.Json.Serialization;
 
@@ -44,6 +46,10 @@
       aServiceCollection.AddTransient<CounterState>();
       aServiceCollection.AddTransient<EventStreamState>();
       aServiceCollection.AddTransient<WeatherForecastsState>();
+
+      Parser parser = new TimeWarpCommandLineBuilder(aServiceCollection).Build();
+      aServiceCollection.AddSingleton(parser); // TODO can't be a singleton for serverside blazor will need to make a factory.
+
     }
   }
 }

@@ -14,3 +14,24 @@ Welcome to your new app with Blazor-State management with an easily extensible p
 <a href="https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd?hl=en">Redux Dev Tools Chrome Extention </a>
 
 <SurveyPrompt Title="How is Blazor working for you?" />
+
+<textarea @bind="Junk" @onkeypress="@HandleKeyPress"></textarea>
+
+<textarea @bind="Junk" @onkeypress="@HandleKeyPress"></textarea>
+
+<div>@Junk</div>
+
+<button class="btn btn-primary" @onclick="@ButtonClick">Click me</button>
+
+@code
+{
+  public string Junk { get; set; }
+  internal void ButtonClick() =>
+      Junk += "*";
+
+  protected void HandleKeyPress(UIKeyboardEventArgs aUIKeyboardEventArgs)
+  {
+    Console.WriteLine($"HandleKeyPress Key:{aUIKeyboardEventArgs.Key} Junk:{Junk}");
+    Junk += "x";
+  }
+}

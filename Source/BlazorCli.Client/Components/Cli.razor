@@ -1,5 +1,6 @@
 ﻿@inherits CliBase
 
+<div>@Input</div>
 <div class="row">
 
   <div id="@Id" class="col bg-secondary p-3">
@@ -15,16 +16,15 @@
         <textarea class="bg-transparent text-light border-0"
                   autofocus
                   placeholder="Enter command"
-                  @bind="@Input"
+                  @bind-value="@Input"
+                  @bind-value:event="oninput"
                   @onkeypress="@HandleKeyPress"
                   onkeydown="
-              const pd = [@TabKey];
-              if (pd.includes(event.which)) {
+              const preventDefaultKeys = [@TabKey];
+              if (preventDefaultKeys.includes(event.which)) {
                 event.preventDefault();
                 event.target.dispatchEvent(new KeyboardEvent('keypress', event));
-              }">
-        </textarea>
-
+              }"></textarea>
       </div>
     </div>
   </div>

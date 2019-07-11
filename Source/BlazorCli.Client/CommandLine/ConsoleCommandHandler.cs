@@ -6,19 +6,17 @@
   using System.CommandLine.Invocation;
   using System.Threading.Tasks;
 
-  internal class MediatorCommandHandler : ICommandHandler
+  internal class ConsoleCommandHandler : ICommandHandler
   {
     private IMediator Mediator { get; }
-
     private Type Type { get; }
 
-    public MediatorCommandHandler(Type aType, IMediator aMediator)
+    public ConsoleCommandHandler(Type aType, IMediator aMediator)
     {
       Type = aType;
       Mediator = aMediator;
     }
 
-    //https://stackoverflow.com/questions/1089123/setting-a-property-by-reflection-with-a-string-value
     public async Task<int> InvokeAsync(InvocationContext aInvocationContext)
     {
       try
@@ -35,12 +33,17 @@
         if (requestType != null)
         {
           _ = await Mediator.Send((IRequest)request);
-        } else
+        }
+        else
         {
           Type genericRequestType = Type.GetInterface(typeof(IRequest<>).Name);
-          Type x = genericRequestType.GenericTypeArguments[0];
-          var foo = (Task)Mediator.GetType().GetMethod(nameof(Mediator.Send)).MakeGenericMethod(x).Invoke(Mediator, new object[] { request, null });
-          await foo;
+          Type genericTypeArguments = genericRequestType.GenericTypeArguments[0];
+          var task = (Task)Mediator
+            .GetType()
+            .GetMethod(nameof(Mediator.Send))
+            .MakeGenericMethod(genericTypeArguments)
+            .Invoke(Mediator, new object[] { request, null });
+          await task;
         }
 
         return 0;

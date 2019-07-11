@@ -10,6 +10,7 @@
   using MediatR;
   using Microsoft.AspNetCore.Components.Builder;
   using Microsoft.Extensions.DependencyInjection;
+  using System;
   using System.CommandLine;
   using System.Reflection;
   using System.Text.Json.Serialization;
@@ -47,9 +48,10 @@
       aServiceCollection.AddTransient<EventStreamState>();
       aServiceCollection.AddTransient<WeatherForecastsState>();
 
-      Parser parser = new TimeWarpCommandLineBuilder(aServiceCollection).Build();
-      aServiceCollection.AddSingleton(parser); // TODO can't be a singleton for serverside blazor will need to make a factory.
-
+      aServiceCollection.AddScoped<Parser>
+      (
+        (IServiceProvider aServiceProvider ) => new ParserBuilder(aServiceProvider, aServiceCollection).Build()
+      );
     }
   }
 }
